@@ -13,6 +13,7 @@ from rich.layout import Layout
 from rich.text import Text
 import sys
 import argparse  # Add at the top with other imports
+import select
 
 # --- Add puzzle_generator import ---
 try:
@@ -31,6 +32,7 @@ class AppState(Enum):
     DASHBOARD_NEWS = "dashboard_news"
     COUNTDOWN = "countdown"
     IDLE = "idle"
+    SETTINGS = "settings"
 
 # --- Configuration ---
 # More robust path handling relative to this script's location
@@ -64,11 +66,12 @@ def init_config_dirs():
         # logging.info(f"Ensured directory exists: {dir_path}") # Less verbose
 
     default_settings = {
-        "alarm_sound_filename": "rooster.mp3", # Store only filename
+        "audio_device": "default",
+        "alarm_sound": "../alarms/alarm.mp3",
+        "internet_check": True,
         "puzzles_required": 3,
         "check_internet": True,
-        "audio_device": "default", # Placeholder for future use
-        "puzzle_difficulty": "easy"
+        "puzzle_difficulty": "easy"  # Add while maintaining compatibility
     }
 
     default_schedule = {day: {
@@ -104,8 +107,14 @@ def load_config():
             settings = json.load(f)
         with open(schedule_path) as f:
             schedule = json.load(f)
-        # Construct full alarm path
-        settings['alarm_sound_path'] = os.path.join(ALARM_DIR, settings.get('alarm_sound_filename', 'alarm.mp3'))
+        # Update alarm sound path handling
+        if 'alarm_sound' in settings:
+            # Convert relative path to absolute
+            rel_path = settings['alarm_sound'].replace('..', '')
+            settings['alarm_sound_path'] = os.path.normpath(os.path.join(BASE_DIR, '..', rel_path.lstrip('/')))
+        else:
+            settings['alarm_sound_path'] = os.path.join(ALARM_DIR, 'alarm.mp3')
+            
         logging.info("Configuration loaded successfully.")
         return settings, schedule
     except FileNotFoundError as e:
@@ -349,6 +358,60 @@ def generate_countdown_panel(today_schedule):
 
     return Panel(content.strip(), title="⏳ Countdown", border_style="blue")
 
+def display_settings(settings, schedule):
+    """Displays and manages settings page."""
+    console.clear()
+    while True:
+        console.print(Panel("""
+[bold cyan]Settings Menu[/]
+1. [yellow]Trigger Debug Alarm[/]
+2. Change Alarm Sound ([dim]current: {0}[/])
+3. Set Puzzle Count ([dim]current: {1}[/])
+4. Set Puzzle Difficulty ([dim]current: {2}[/])
+5. Save & Exit
+""".format(
+            os.path.basename(settings.get('alarm_sound', 'Not set')),
+            settings.get('puzzles_required', 3),
+            settings.get('puzzle_difficulty', 'easy')
+        ), title="⚙️ Settings"))
+
+        choice = console.input("Select option (1-5): ")
+        
+        if choice == "1":
+            return "trigger_alarm"  # Special return value to trigger alarm
+        elif choice == "2":
+            new_sound = console.input("Enter new alarm sound filename: ")
+            if new_sound and os.path.exists(os.path.join(ALARM_DIR, new_sound)):
+                settings['alarm_sound'] = f"../alarms/{new_sound}"
+                settings['alarm_sound_path'] = os.path.join(ALARM_DIR, new_sound)
+        elif choice == "3":
+            try:
+                count = int(console.input("Enter number of puzzles (1-10): "))
+                if 1 <= count <= 10:
+                    settings['puzzles_required'] = count
+            except ValueError:
+                console.print("[red]Invalid input. Must be a number.[/]")
+        elif choice == "4":
+            diff = console.input("Enter difficulty (easy/medium/hard): ").lower()
+            if diff in ['easy', 'medium', 'hard']:
+                settings['puzzle_difficulty'] = diff
+        elif choice == "5":
+            # Save settings
+            settings_path = os.path.join(CONFIG_DIR, "settings.json")
+            with open(settings_path, 'w') as f:
+                # Create a copy without the full path to save
+                save_settings = settings.copy()
+                if 'alarm_sound_path' in save_settings:
+                    del save_settings['alarm_sound_path']
+                json.dump(save_settings, f, indent=4)
+            return None
+        
+        console.clear()
+
+def check_settings_hotkey(char):
+    """Check if the settings hotkey ('s') was pressed."""
+    return char.lower() == 's'
+
 # --- Main Program ---
 def main():
     # Add argument parsing at the start of main()
@@ -382,6 +445,19 @@ def main():
         while True:
             now = datetime.datetime.now()
             today_schedule = get_today_schedule(schedule)
+
+            if sys.stdin in select.select([sys.stdin], [], [], 0)[0]:
+                char = sys.stdin.read(1)
+                if current_state not in [AppState.ALARMING, AppState.PUZZLE] and check_settings_hotkey(char):
+                    console.clear()
+                    old_state = current_state
+                    current_state = AppState.SETTINGS
+                    result = display_settings(settings, schedule)
+                    if result == "trigger_alarm":
+                        args.debug_alarm = True
+                    current_state = old_state
+                    console.clear()
+                    continue
 
             # --- Daily Reset ---
             if now.hour == 0 and now.minute == 0 and now.second < 5: # Check briefly around midnight
@@ -512,6 +588,14 @@ def main():
                 # Placeholder for potential ambient animation updates or checks
                 # print("Idling...") # Debugging
                 pass
+
+            elif current_state == AppState.SETTINGS:
+                result = display_settings(settings, schedule)
+                if result == "trigger_alarm":
+                    args.debug_alarm = True
+                current_state = AppState.WAITING
+                console.clear()
+                continue
 
             # --- Loop Sleep ---
             # Shorter sleep for responsiveness, longer if only waiting
