@@ -1,72 +1,89 @@
-# Valinor Dawn
+# 🌅 Valinor Dawn
 
-Valinor Dawn is a comprehensive alarm and puzzle application designed to enhance your daily routine with customizable features and engaging puzzles.
+A smart alarm system that ensures you're truly awake through puzzles and keeps you informed with your morning dashboard.
 
-## Project Structure
+## ✨ Features
 
-- **alarms/sounds**: Contains alarm sound files in formats such as .mp3 or .wav.
-- **cache/**: Stores temporary data:
-  - `weather.json`: Cached weather data, updated by `daily_updater.py`.
-  - `news.json`: Cached news headlines, updated by `daily_updater.py`.
-  - `reminders.json`: User-added reminders/tasks for the next morning.
-  - `puzzle_history.json`: Tracks recently shown puzzles to avoid repetition.
-  
-- **config/**: Holds configuration files:
-  - `settings.json`: User settings including audio device preferences, alarm sound choices, and internet checks.
-  - `schedule.json`: Weekly schedule detailing wake-up, breakfast, and leave times for each day.
+- 🧩 Solve puzzles to disable the alarm
+- 📅 Customizable daily wake-up schedules
+- 💡 Smart morning dashboard including:
+  - 📌 Daily reminders and notes
+  - 🌤️ Weather updates
+  - 📰 News headlines
+  - ⏳ Dynamic countdown for daily events
 
-- **logs/**: Contains application logs:
-  - `status.log`: Logs events, errors, and status updates for debugging.
+## 🚀 Getting Started
 
-- **scripts/**: Contains executable scripts:
-  - `main.py`: The core Valinor Dawn program managing alarms, puzzles, and the dashboard.
-  - `daily_updater.py`: Runs periodically to fetch and cache weather/news.
-  - `settings_page.py`: Launches the interactive settings interface.
-  - `reminders.py`: Manages the interface for adding reminders/tasks.
-  - `puzzle_generator.py`: Contains functions to generate dynamic puzzles.
-  - `watchdog.sh`: Ensures `main.py` is running, typically used with cron.
+### Prerequisites
+- Python 3.8+
+- pip package manager
 
-- **assets/**: Optional folder for visual assets:
-  - **fonts/**: Custom fonts for ASCII art.
+### Installation
 
-- **requirements.txt**: Lists Python dependencies required for the project (e.g., rich, pygame, requests).
+```bash
+# Clone the repository
+git clone https://github.com/findirfin/valinor-dawn.git
+cd valinor-dawn
 
-- **crontab.txt**: Contains example crontab entries for automation.
+# Install dependencies
+pip install -r requirements.txt
+```
 
-## Setup Instructions
+### Configuration
 
-1. Clone the repository:
-   ```
-   git clone <repository-url>
-   cd valinor_dawn
-   ```
+1. Place your alarm sound in `/alarms` directory
+2. Configure your settings in `/config/settings.json`:
+```json
+{
+    "alarm_sound_filename": "your-sound.mp3",
+    "puzzles_required": 3,
+    "puzzle_difficulty": "easy"
+}
+```
 
-2. Create and activate a virtual environment:
-   ```
-   python -m venv venv
-   source venv/bin/activate  # On Windows, use: venv\Scripts\activate
-   ```
+3. Set your schedule in `/config/schedule.json`
 
-3. Install the required dependencies:
-   ```
-   pip install -r requirements.txt
-   ```
+## 🎮 Usage
 
-4. Configure your settings in `config/settings.json` and `config/schedule.json`.
+```bash
+# Normal start
+python scripts/main.py
 
-5. Run the main application:
-   ```
-   python scripts/main.py
-   ```
+# Debug mode (triggers alarm immediately)
+python scripts/main.py --debug-alarm
+```
 
-## Usage
+## 📁 Project Structure
 
-- Set alarms and customize sounds through the settings interface.
-- View and manage reminders and puzzles directly from the application.
+```
+valinor-dawn/
+├── alarms/         # Alarm sound files
+├── cache/          # Temporary data storage
+├── config/         # Configuration files
+├── logs/           # Application logs
+└── scripts/        # Python source code
+```
 
-## Troubleshooting
+## ⚙️ Configuration Files
 
-- Check `logs/status.log` for any errors or status updates.
-- Ensure all dependencies are installed and up to date.
+### settings.json
+- `alarm_sound_filename`: Sound file for the alarm
+- `puzzles_required`: Number of puzzles to solve
+- `check_internet`: Enable/disable online features
+- `puzzle_difficulty`: Easy, medium, or hard
 
-For further assistance, please refer to the documentation or open an issue in the repository.
+### schedule.json
+Configure wake-up times and daily events for each day of the week.
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit pull requests.
+
+## 📝 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 💡 Acknowledgments
+
+- Inspired by the need for a more engaging wake-up experience
+- Built with Python and the excellent [rich](https://github.com/Textualize/rich) library
