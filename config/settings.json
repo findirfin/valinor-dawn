@@ -1,5 +1,7 @@
 {
   "audio_device": "default",
-  "alarm_sound": "rooster.mp3",
-  "internet_check": true
+  "alarm_sound": "../alarms/alarm.mp3",
+  "internet_check": true,
+  "puzzles_required": 3,
+  "check_internet": true
 }

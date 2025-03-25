@@ -1,37 +1,37 @@
 {
-  "Monday": {
-    "wake_up": "07:00",
-    "breakfast": "07:30",
-    "leave": "08:00"
-  },
-  "Tuesday": {
-    "wake_up": "07:00",
-    "breakfast": "07:30",
-    "leave": "08:00"
-  },
-  "Wednesday": {
-    "wake_up": "07:00",
-    "breakfast": "07:30",
-    "leave": "08:00"
-  },
-  "Thursday": {
-    "wake_up": "07:00",
-    "breakfast": "07:30",
-    "leave": "08:00"
-  },
-  "Friday": {
-    "wake_up": "07:00",
-    "breakfast": "07:30",
-    "leave": "08:00"
-  },
-  "Saturday": {
-    "wake_up": "08:00",
-    "breakfast": "08:30",
-    "leave": "09:00"
-  },
-  "Sunday": {
-    "wake_up": "08:00",
-    "breakfast": "08:30",
-    "leave": "09:00"
-  }
+    "monday": {
+        "wake_up": "04:40",
+        "breakfast": "05:15",
+        "leave_house": "06:00"
+    },
+    "tuesday": {
+        "wake_up": "04:40",
+        "breakfast": "05:15",
+        "leave_house": "06:00"
+    },
+    "wednesday": {
+        "wake_up": "04:40",
+        "breakfast": "05:15",
+        "leave_house": "06:00"
+    },
+    "thursday": {
+        "wake_up": "04:40",
+        "breakfast": "05:15",
+        "leave_house": "06:00"
+    },
+    "friday": {
+        "wake_up": "04:40",
+        "breakfast": "05:15",
+        "leave_house": "06:00"
+    },
+    "saturday": {
+        "wake_up": "07:00",
+        "breakfast": "08:00",
+        "leave_house": "09:00"
+    },
+    "sunday": {
+        "wake_up": "07:00",
+        "breakfast": "08:00",
+        "leave_house": "09:00"
+    }
 }
