@@ -285,11 +285,12 @@ def display_weather():
             ts_formatted = timestamp
 
         art, style = get_weather_art(conditions)
+        # Removed Text wrapper and adjusted formatting
         content = f"{style}{art} {conditions.title()}[/]\n\n" \
-                  f"Temperature: {temp}°C\n" \
+                  f"[bold]Temperature:[/] {temp}°C\n" \
                   f"[dim]Updated: {ts_formatted}[/]"
 
-        display_panel(Text(content, justify="center"), title="Weather Update")
+        display_panel(content, title="Weather Update", border_style="blue")
         console.input("[grey50]Press Enter for News...[/]")
         return True
     except FileNotFoundError:
