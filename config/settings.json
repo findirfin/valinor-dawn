@@ -1,0 +1,5 @@
+{
+  "audio_device": "default",
+  "alarm_sound": "rooster.mp3",
+  "internet_check": true
+}

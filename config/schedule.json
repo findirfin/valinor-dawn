@@ -1,0 +1,37 @@
+{
+  "Monday": {
+    "wake_up": "07:00",
+    "breakfast": "07:30",
+    "leave": "08:00"
+  },
+  "Tuesday": {
+    "wake_up": "07:00",
+    "breakfast": "07:30",
+    "leave": "08:00"
+  },
+  "Wednesday": {
+    "wake_up": "07:00",
+    "breakfast": "07:30",
+    "leave": "08:00"
+  },
+  "Thursday": {
+    "wake_up": "07:00",
+    "breakfast": "07:30",
+    "leave": "08:00"
+  },
+  "Friday": {
+    "wake_up": "07:00",
+    "breakfast": "07:30",
+    "leave": "08:00"
+  },
+  "Saturday": {
+    "wake_up": "08:00",
+    "breakfast": "08:30",
+    "leave": "09:00"
+  },
+  "Sunday": {
+    "wake_up": "08:00",
+    "breakfast": "08:30",
+    "leave": "09:00"
+  }
+}

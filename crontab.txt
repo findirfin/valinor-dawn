@@ -1,0 +1,11 @@
+# crontab.txt
+
+# Example crontab entries for automation
+# Run daily_updater.py every day at 7 AM
+0 7 * * * /usr/bin/python3 /path/to/valinor_dawn/scripts/daily_updater.py
+
+# Run watchdog.sh every 5 minutes
+*/5 * * * * /path/to/valinor_dawn/scripts/watchdog.sh
+
+# Run reminders.py every day at 8 AM
+0 8 * * * /usr/bin/python3 /path/to/valinor_dawn/scripts/reminders.py
